@@ -160,8 +160,11 @@ def n_queens_solver(n):
             break
 
 while(1):
-    n=int(input("Enter n :"))
-    n_queens_solver(n)
+    try:
+        n=int(input("Enter n :"))
+        n_queens_solver(n)
+    except ValueError:
+        print("Give proper input!")
 
 
 

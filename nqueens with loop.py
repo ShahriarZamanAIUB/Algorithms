@@ -86,9 +86,11 @@ def forward_track(n,selected_queens,problem_queens):
             return n, selected_queens, problem_queens, -1
         else:
             #safe_box=random.choice(updated_safe_boxes) # Selecting first/random box in next row
-            safe_box=random.choice(updated_safe_boxes)
+            #safe_box=random.choice(updated_safe_boxes)
+            #safe_box=updated_safe_boxes[0]
 
-            selected_queens.append(safe_box)
+            selected_queens.append(random.choice(updated_safe_boxes))
+            #selected_queens.append(updated_safe_boxes[0])
 
             #print(f"After selecting {selected_queens} :")
             #print_chess_board(n, selected_queens)
@@ -127,54 +129,39 @@ def print_chess_board(n, values_at):
 
         if((i+1)%n==0): # Print new row of Chessboard
             print()
-            #for j in range(0,n,1):
-            #    print("---",end='')
-            #print()
 
 
-#print(f"Safe Boxes: {get_next_safe_boxes(4,1,[])}")
+def n_queens_solver(n):
+    problem_queens=selected_queens=[]
 
-#print_chess_board(4,get_next_safe_boxes(4,1,[])) 
+    while(1):
+        n, selected_queens, problem_queens ,status = forward_track(n,selected_queens,problem_queens)
+        if(status==-1):
+            if(not selected_queens):
+                print(f"No solution exists for n={n}")
+                break
+        
+        
+            #print(f"\nBacktracking through {selected_queens}...")
 
-#queens=[]
-#print(random.choice(get_next_safe_boxes(4, len(queens)+1, queens)))
+            if(len(selected_queens)==1):
+                problem_queens=[queen for queen in problem_queens if queen<=n]
+                problem_queens.append(selected_queens.pop())
 
+            else:
+                problem_queens=[queen for queen in problem_queens if queen<=len(selected_queens)*n]
+                problem_queens.append(selected_queens.pop())
 
- 
-import sys
-#sys.setrecursionlimit(1000000) 
+            #problem_queens=sorted(list(set(problem_queens)))
+            problem_queens=sorted(list(set(problem_queens)))
+        
 
-
-#forward_track(17,[],[])
-
-n=106
-
-problem_queens=selected_queens=[]
+        elif(status==2):
+            break
 
 while(1):
-    n, selected_queens, problem_queens ,status = forward_track(n,selected_queens,problem_queens)
-    if(status==-1):
-        if(not selected_queens):
-            print(f"No solution exists for n={n}")
-            break
-      
-     
-        #print(f"\nBacktracking through {selected_queens}...")
-
-        if(len(selected_queens)==1):
-            problem_queens=[queen for queen in problem_queens if queen<=n]
-            problem_queens.append(selected_queens.pop())
-
-        else:
-            problem_queens=[queen for queen in problem_queens if queen<=len(selected_queens)*n]
-            problem_queens.append(selected_queens.pop())
-
-        #problem_queens=sorted(list(set(problem_queens)))
-        problem_queens=sorted(list(set(problem_queens)))
-    
-
-    elif(status==2):
-        break
+    n=int(input("Enter n :"))
+    n_queens_solver(n)
 
 
 
